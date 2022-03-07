@@ -44,14 +44,90 @@ const copyBox = {
   cursor: 'pointer',
   width: '50px',
   height: 'auto'
-
 }
 const Button = {
   background: 'transparent'
 }
+const Data = {
+  referals:[
+    {
+      id:0,
+      name:'breaker43',
+      avatar: 'https://d36mxiodymuqjm.cloudfront.net/website/icons/avatars/avatar-frame_novice.png',
+      avatarFrame:'https://d36mxiodymuqjm.cloudfront.net/website/icons/avatars/avatar_0.png',
+      joined:'March 6, 2022, 09:10:49 AM',
+      rating: 0,
+      battles: 0,
+    },
+    {
+      id:1,
+      name:'hitman1',
+      avatar: 'https://d36mxiodymuqjm.cloudfront.net/website/icons/avatars/avatar-frame_novice.png',
+      avatarFrame:'https://d36mxiodymuqjm.cloudfront.net/website/icons/avatars/avatar_0.png',
+      joined:'March 6, 2022, 09:10:49 AM',
+      rating: 0,
+      battles: 0,
+    },
+    {
+      id:2,
+      name:'onward',
+      avatar: 'https://d36mxiodymuqjm.cloudfront.net/website/icons/avatars/avatar-frame_novice.png',
+      avatarFrame:'https://d36mxiodymuqjm.cloudfront.net/website/icons/avatars/avatar_0.png',
+      joined:'March 6, 2022, 09:10:49 AM',
+      rating: 0,
+      battles: 0,
+    },
+    {
+      id:3,
+      name:'sharklock',
+      avatar: 'https://d36mxiodymuqjm.cloudfront.net/website/icons/avatars/avatar-frame_novice.png',
+      avatarFrame:'https://d36mxiodymuqjm.cloudfront.net/website/icons/avatars/avatar_0.png',
+      joined:'March 6, 2022, 09:10:49 AM',
+      rating: 0,
+      battles: 0,
+    }
+  ],
+  payments:[
+    {
+      id:"0",
+      name:"muscleblob23",
+      date:"March 6, 2022, 09:10:49 AM",
+      amount:"400",
+      type:"packs"
+    },
+    {
+      id:"1",
+      name:"muscleblob23",
+      date:"March 5, 2022, 09:10:49 AM",
+      amount:"400",
+      type:"packs"
+    },
+    {
+      id:"2",
+      name:"muscleblob23",
+      date:"March 4, 2022, 09:10:49 AM",
+      amount:"400",
+      type:"packs"
+    },
+    {
+      id:"3",
+      name:"muscleblob23",
+      date:"March 3, 2022, 09:10:49 AM",
+      amount:"400",
+      type:"packs"
+    },
+    {
+      id:"4",
+      name:"muscleblob23",
+      date:"March 2, 2022, 09:10:49 AM",
+      amount:"400",
+      type:"packs"
+    },
 
+  ]
+}
 class App extends Component {
-  
+
 
   constructor(props) {
     super(props);
@@ -66,7 +142,6 @@ class App extends Component {
     this.setState({isOn: !this.state.isOn})
   }
   handleMouseIn() {
-    this.setState({ hover: true })
     navigator.clipboard.readText().then(
       clipText => {
         if(clipText === "https://splinterlands.com?ref="+this.state.referalID){
@@ -77,11 +152,11 @@ class App extends Component {
         }
       }
     );
+    this.setState({ hover: true })
   }
   
   handleMouseOut() {
     this.setState({ hover: false })
-    
   }
   handleCopyEvent() {
     navigator.clipboard.writeText("https://splinterlands.com?ref="+this.state.referalID);
@@ -121,7 +196,7 @@ class App extends Component {
             </p>
           </div>
           <div className="col-2" style={{...colStyle, ...col2Style}}>
-          <Tooltip stylefromParent={tooltipStyle} dataFromParent = {this.state.toolTip} />
+          <Tooltip stylefromParent={tooltipStyle}  dataFromParent = {this.state.toolTip} />
             <button 
             style={Button}
             onMouseOver={this.handleMouseIn.bind(this)} onMouseOut={this.handleMouseOut.bind(this)}
