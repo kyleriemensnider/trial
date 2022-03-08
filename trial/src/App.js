@@ -48,7 +48,25 @@ const copyBox = {
 const Button = {
   background: 'transparent'
 }
-const Data = {
+const Tabs = {
+  background: '#000',
+  border: '1px solid #ffce00',
+  borderRadius: '6px',
+  cursor: 'pointer',
+  opacity: '.7',
+  padding: '8px 30px',
+  transition: 'opacity .2s',
+  color: '#ffeda0',
+  fontFamily: 'OpenSans',
+  fontSize: '12px',
+  lineHeight: '20px',
+  textAlign: 'center',
+  minWidth: '150px'
+}
+const tabcontainerStyle = {
+  padding: '10px 30px 30px'
+}
+const data = {
   referals:[
     {
       id:0,
@@ -126,9 +144,13 @@ const Data = {
 
   ]
 }
+
 class App extends Component {
 
-
+  dataList=data.referals.map((item,index)=>{
+    console.log(item)
+    return <li key={index}>{item.name}</li>
+  })
   constructor(props) {
     super(props);
     this.state = {
@@ -154,13 +176,25 @@ class App extends Component {
     );
     this.setState({ hover: true })
   }
-  
   handleMouseOut() {
     this.setState({ hover: false })
   }
   handleCopyEvent() {
     navigator.clipboard.writeText("https://splinterlands.com?ref="+this.state.referalID);
     this.setState({toolTip: 'Copied'});
+  }
+  handleTabEvent(type){
+    if(type === 'referrals'){
+      this.dataList=data.referals.map((item,index)=>{
+        return <li key={index}>{item.id}</li>
+      })
+    }
+    else{
+      this.dataList=data.payments.map((item,index)=>{
+        return <li key={index}>{item.id}</li>
+      })
+    }
+    console.log(this.dataList)
   }
   render() {
     const tooltipStyle = {
@@ -180,7 +214,8 @@ class App extends Component {
           <div className="col-8" style={{...colStyle, ...col8Style}}>
             <p>
             Receive 5% of the LIFETIME PURCHASES of Card Packs and Summoner Spellbooks that are made by referrals!<br />
-            <small><i>Only accounts that log in for the first time using your referral link are eligible for affiliate rewards. Purchases made with Dark Energy Crystals (DEC) do not qualify for affiliate rewards. All reward payments are made in CREDITS.</i></small>
+            <small><i>Only accounts that log in for the first time using your referral link are eligible for affiliate rewards. Purchases made with 
+            Dark Energy Crystals (DEC) do not qualify for affiliate rewards. All reward payments are made in CREDITS.</i></small>
             </p>
           </div>
         </div>
@@ -204,6 +239,25 @@ class App extends Component {
             >
             <IconCopy style={copyBox} />
             </button>
+          </div>
+        </div>
+        <div className="row tabs" style={{...rowStyle, ...tabcontainerStyle}}>
+          <div className='columns' style={colStyle}>
+            <button 
+            onClick={() => {this.handleTabEvent('Referrals')}}
+            style={Tabs}>Referrals</button>
+          </div>
+          <div className='columns' style={colStyle}>
+            <button 
+            onClick={() => {this.handleTabEvent('payments')}}
+            style={Tabs}>Payments</button>
+          </div>
+        </div>
+        <div className='row'>
+          <div className='columns'>
+          <ul>
+            {this.dataList}
+          </ul>
           </div>
         </div>
         </main>

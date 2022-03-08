@@ -24,3 +24,7 @@ code {
   
   border-top: 6px solid #ffffff;
 }
+.tabs button:hover{
+  box-shadow: 0 0 8px rgb(255 237 160 / 80%);
+  opacity: 1;
+}
