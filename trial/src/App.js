@@ -1,4 +1,5 @@
-import React, {Component} from 'react';
+import React, {Component, useCallback, useState } from 'react';
+// import useToggle from "./hooks/useToggle";
 import img_coins_candle from './img_coins-candle@2x.png';
 import { ReactComponent as IconCopy } from './icon_copy.svg';
 import './App.css';
@@ -29,10 +30,10 @@ const col8Style = {
   flex: '0 0 66.66666%',
   maxWidth: '66.66666%'
 }
-const col10Style = {
-  flex: '0 0 83.33333%',
-  maxWidth: '83.33333%'
-}
+// const col10Style = {
+//   flex: '0 0 83.33333%',
+//   maxWidth: '83.33333%'
+// }
 const refBox = {
   backgroundColor: '#ffffff',
   padding: '4px 12px',
@@ -67,7 +68,7 @@ const tabcontainerStyle = {
   padding: '10px 30px 30px'
 }
 const data = {
-  referals:[
+  referrals:[
     {
       id:0,
       name:'breaker43',
@@ -146,23 +147,29 @@ const data = {
 }
 
 class App extends Component {
-
-  dataList=data.referals.map((item,index)=>{
-    console.log(item)
-    return <li key={index}>{item.name}</li>
-  })
   constructor(props) {
     super(props);
     this.state = {
       isOn: true,
       referalID: 'kuzuri27',
       hover: false,
-      toolTip: 'Copy'
+      toolTip: 'Copy',
+      togglePaymentsReferrals: true,
     };
   }
   toggle = () => {
-    this.setState({isOn: !this.state.isOn})
+    this.setState({togglePaymentsReferrals: !this.state.togglePaymentsReferrals})
   }
+  useToggle = (initialState = false) => {
+    // Initialize the state
+    const [state, setState] = useState(initialState);
+    
+    // Define and memorize toggler function in case we pass down the component,
+    // This function change the boolean value to it's opposite value
+    const toggle = useCallback(() => setState(state => !state), []);
+    
+    return [state, toggle]
+}
   handleMouseIn() {
     navigator.clipboard.readText().then(
       clipText => {
@@ -183,31 +190,20 @@ class App extends Component {
     navigator.clipboard.writeText("https://splinterlands.com?ref="+this.state.referalID);
     this.setState({toolTip: 'Copied'});
   }
-  handleTabEvent(type){
-    if(type === 'referrals'){
-      this.dataList=data.referals.map((item,index)=>{
-        return <li key={index}>{item.id}</li>
-      })
-    }
-    else{
-      this.dataList=data.payments.map((item,index)=>{
-        return <li key={index}>{item.id}</li>
-      })
-    }
-    console.log(this.dataList)
-  }
+  
   render() {
     const tooltipStyle = {
       display: this.state.hover ? 'block' : 'none',
       
     }
+    const {togglePaymentsReferrals} = this.state
     return (
       <div className="App">
         <header className="App-header">
           <h1>Affiliate Program</h1>
         </header>
         <main>
-        <div className="row" style={rowStyle} >
+        <div className="row intro" style={rowStyle} >
           <div className="col-4" style={{...colStyle, ...col4Style}}>
             <img src={img_coins_candle} className="" alt="Lit candle, coins, and dagger" />
           </div>
@@ -219,7 +215,7 @@ class App extends Component {
             </p>
           </div>
         </div>
-        <div className="row" style={rowStyle} >
+        <div className="row referral-link" style={rowStyle} >
           <div className="col-4" style={{...colStyle, ...col4Style}}>
             <p >
               Share your link
@@ -244,19 +240,28 @@ class App extends Component {
         <div className="row tabs" style={{...rowStyle, ...tabcontainerStyle}}>
           <div className='columns' style={colStyle}>
             <button 
-            onClick={() => {this.handleTabEvent('Referrals')}}
+            onClick={() => {this.toggle()}}
             style={Tabs}>Referrals</button>
           </div>
           <div className='columns' style={colStyle}>
             <button 
-            onClick={() => {this.handleTabEvent('payments')}}
+            onClick={() => {this.toggle()}}
             style={Tabs}>Payments</button>
           </div>
         </div>
-        <div className='row'>
-          <div className='columns'>
+        <div className='row list'style={rowStyle} >
+        <div className='columns' style={{...colStyle, display: togglePaymentsReferrals ? 'inherit': 'none' }}>
           <ul>
-            {this.dataList}
+            {data.referrals.map((item,index)=>{
+              return <li key={item.name}>{item.name}</li>
+            })}
+          </ul>
+          </div>
+          <div className='columns' style={{...colStyle, display: !togglePaymentsReferrals ? 'inherit': 'none' }}>
+          <ul>
+          {data.payments.map((item,index)=>{
+              return <li key={index}>{item.id}</li>
+            })}
           </ul>
           </div>
         </div>
