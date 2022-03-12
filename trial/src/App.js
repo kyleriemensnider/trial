@@ -190,7 +190,14 @@ class App extends Component {
     navigator.clipboard.writeText("https://splinterlands.com?ref="+this.state.referalID);
     this.setState({toolTip: 'Copied'});
   }
-  
+  handleTabEvent(type){
+    if(type === 'referrals'){
+      this.setState({togglePaymentsReferrals: true});
+    }
+    else{
+      this.setState({togglePaymentsReferrals: false});
+    }
+  }
   render() {
     const tooltipStyle = {
       display: this.state.hover ? 'block' : 'none',
@@ -240,12 +247,12 @@ class App extends Component {
         <div className="row tabs" style={{...rowStyle, ...tabcontainerStyle}}>
           <div className='columns' style={colStyle}>
             <button 
-            onClick={() => {this.toggle()}}
+            onClick={() => {this.handleTabEvent('referrals')}}
             style={Tabs}>Referrals</button>
           </div>
           <div className='columns' style={colStyle}>
             <button 
-            onClick={() => {this.toggle()}}
+            onClick={() => {this.handleTabEvent('payments')}}
             style={Tabs}>Payments</button>
           </div>
         </div>
